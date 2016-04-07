@@ -46,22 +46,60 @@ class wechatCallbackapiTest
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $fromUsername = $postObj->FromUserName;
             $toUsername = $postObj->ToUserName;
-            $keyword = trim($postObj->Content);
-            $time = time();
-                    $textTpl = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]>".
-			"</FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content>".
-			"<![CDATA[%s]]></Content><FuncFlag>0</FuncFlag></xml>";
-            if($keyword == "1")
-            {
-                $msgType = "text";
-                $contentStr = date("Y-m-d H:i:s",time());
-                $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
-                echo $resultStr;
+            $RX_TYPE = trim($postObj->MsgType); 
+
+            switch($RX_TYPE){ 
+                case "event": 
+                $result = $this->receiveEvent($postObj); 
+                breadk; 
+                case "text":
+                $result = $this->receiveText($postObj); 
+                breadk;
             }
+            echo $result;
         }else{
             echo "";
             exit;
         }
     }
+
+    private function receiveEvent($object){ 
+        $content = ""; 
+        switch ($object->Event){ 
+            case "subscribe": 
+            $content = "欢迎关注春暖花开再见咯";//这里是向关注者发送的提示信息 
+            break; 
+            case "unsubscribe": 
+            $content = ""; 
+            break; 
+        } 
+        $result = $this->transmitText($object,$content); 
+        return $result; 
+    } 
+    private function transmitText($object,$content){ 
+        $textTpl = "<xml> 
+        <ToUserName><![CDATA[%s]]></ToUserName> 
+        <FromUserName><![CDATA[%s]]></FromUserName> 
+        <CreateTime>%s</CreateTime> 
+        <MsgType><![CDATA[text]]></MsgType> 
+        <Content><![CDATA[%s]]></Content> 
+        <FuncFlag>0</FuncFlag> 
+        </xml>"; 
+        $result = sprintf($textTpl, $object->FromUserName, $object->$ToUserName, time(), $content); 
+        return $result; 
+    } 
+    private function receiveText($object){ 
+        $content = ""; 
+        switch ($object->Content){ 
+            case "1": 
+            $content = date("Y-m-d H:i:s",time());//这里是向关注者发送的提示信息 
+            break; 
+            default:
+            $content = '随意';
+        } 
+        $result = $this->transmitText($object,$content); 
+        return $result; 
+    } 
+
 }
 ?>
