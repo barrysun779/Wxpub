@@ -92,12 +92,15 @@ class wechatCallbackapiTest
         $content = ""; 
         switch ($object->Content){ 
             case "1": 
-            $content = date("Y-m-d H:i:s",time());//这里是向关注者发送的提示信息 
+                $content = date("Y-m-d H:i:s",time());//这里是向关注者发送的提示信息 
+                $result = $this->transmitText($object,$content); 
             break; 
+
             default:
-            $content = '随意';
+                $content = 'hi';
+                $result = $this->transmitText($object,$content); 
         } 
-        $result = $this->transmitText($object,$content); 
+        
         return $result; 
     } 
 
