@@ -116,7 +116,7 @@ class wechatCallbackapiTest
         $dateArray[] = array("Title"=>$cityname."\n\r".$citydate." ".$cityweek,"Description"=>"","Picurl"=>"","Url" =>"");
         $dateArray[] = array("Title"=>$out,"Description"=>"","Picurl"=>"","Url" =>"");
 		for($i=0;$i<count($cityforecast);$i++){
-            $outstr="☀ ".$cityforecast[$i]["date"]." ".$cityforecast[$i]["week"]."\n\r气温：".$cityforecast[$i]["lowtemp"]."~".$cityforecast[$i]["hightemp"]."\n\r风力：".$cityforecast[$i]["fengxiang"]." ".$cityforecast[$i]["fengli"]."\n\r天气：".$cityforecast[$i]["type"];
+            $outstr.="☀ ".$cityforecast[$i]["date"]." ".$cityforecast[$i]["week"]."\n\r气温：".$cityforecast[$i]["lowtemp"]."~".$cityforecast[$i]["hightemp"]."\n\r风力：".$cityforecast[$i]["fengxiang"]." ".$cityforecast[$i]["fengli"]."\n\r天气：".$cityforecast[$i]["type"]."\n\r";
             $dateArray[] = array("Title"=>$outstr,"Description"=>"","Picurl"=>"","Url" =>"");
         }
         return $outstr; 
